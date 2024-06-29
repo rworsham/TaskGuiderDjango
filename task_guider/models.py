@@ -7,17 +7,23 @@ class Project(models.Model):
     color = models.IntegerField()
     posts = models.ManyToManyField('TodoPost')
 
+class Comment(models.Model):
+    body = models.CharField(max_length=500)
+    date_created = models.DateTimeField(auto_now_add=True)
+    author = models.ForeignKey(User, on_delete=models.PROTECT)
+    parent_post = models.ForeignKey('TodoPost', on_delete=models.PROTECT)
+
 
 
 class TodoPost(models.Model):
-    title = models.CharField(max_length=100)
+    title = models.CharField(max_length=100, unique=True)
     subtitle = models.CharField(max_length=100)
     work_state = models.IntegerField()
-    date_created = models.DateTimeField()
+    date_created = models.DateTimeField(auto_now_add=True)
+    date_updated = models.DateTimeField(auto_now=True)
     due_date = models.DateTimeField()
     body = models.TextField(max_length=1000)
     type = models.TextField(max_length=50)
-    project_id = models.ForeignKey(Project.id, on_delete=models.CASCADE)
-    project = models.ForeignKey(Project.name, on_delete=models.CASCADE)
-    author = models.OneToOneField(User.username, on_delete=models.CASCADE)
+    project_name = models.ForeignKey(Project, on_delete=models.CASCADE, null=True, blank=True)
+    author = models.ForeignKey(User, on_delete=models.PROTECT)
     comments = models.ForeignKey
