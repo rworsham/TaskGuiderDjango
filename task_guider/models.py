@@ -3,8 +3,8 @@ from django.contrib.auth.models import User
 
 
 HIDE = (
-    ("not_hidden","Show on Dashboard"),
-    ("hidden","Hide from Dashboard")
+    ("not_hidden", "Show on Dashboard"),
+    ("hidden",  "Hide from Dashboard")
 )
 
 class Project(models.Model):
