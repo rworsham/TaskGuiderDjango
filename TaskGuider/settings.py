@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'task_guider.apps.TaskGuiderConfig',
+    'subscribed.apps.SubscribedConfig',
 ]
 
 MIDDLEWARE = [
