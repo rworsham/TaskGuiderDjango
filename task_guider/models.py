@@ -7,16 +7,22 @@ HIDE = (
     ("hidden",  "Hide from Dashboard")
 )
 
+
 class Project(models.Model):
     id = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=100)
     color = models.IntegerField()
-    posts = models.ManyToManyField('TodoPost')
+    posts = models.ManyToManyField('TodoPost', blank=True)
 
 
 class WorkState(models.Model):
     name = models.CharField(max_length=100)
     is_hidden = models.CharField(choices=HIDE)
+
+
+class TaskType(models.Model):
+    name = models.CharField(max_length=25)
+    icon = models.CharField(max_length=250)
 
 
 class Comment(models.Model):

@@ -1,6 +1,8 @@
 from django.urls import path
 from . import views
 
+
+app_name = "TaskGuider"
 urlpatterns = [
-    path('dashboard', views.Dashboard.as_view(), name='dashboard')
+    path("", views.test, name="test")
 ]

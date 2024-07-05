@@ -59,7 +59,7 @@ ROOT_URLCONF = 'TaskGuider.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.jinja2.Jinja2',
-        'DIRS': [PROJECT_DIR / 'jinjatemplates'],
+        'DIRS': [PROJECT_DIR/ 'jinjatemplates'],
         'APP_DIRS': True,
     },
     {
