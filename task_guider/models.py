@@ -9,7 +9,6 @@ HIDE = (
 
 
 class Project(models.Model):
-    id = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=100)
     color = models.IntegerField()
     posts = models.ManyToManyField('TodoPost', blank=True)
@@ -17,6 +16,7 @@ class Project(models.Model):
 
 class WorkState(models.Model):
     name = models.CharField(max_length=100)
+    position = models.IntegerField()
     is_hidden = models.CharField(choices=HIDE)
 
 
