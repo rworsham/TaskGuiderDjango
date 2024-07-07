@@ -17,3 +17,15 @@ def test(request):
     # else:
     #     return render(request, "task_guider/test.html")
     return render(request, "test.html", context)
+
+def dashboard(request):
+    context = {'form': TaskForm(), }
+    if request.method == "POST":
+        form = TaskForm(request.POST)
+        if form.is_valid():
+            print(form.cleaned_data["title"])
+            print(form.cleaned_data["subtitle"])
+            print(form.cleaned_data["project"])
+        else:
+            return render(request, "task_guider/dashboard.html")
+    return render(request, "test.html", context)
