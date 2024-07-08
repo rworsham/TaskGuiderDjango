@@ -58,7 +58,11 @@
                       </div>
                       <div class="modal-body">
                           <div class="col-lg-8 col-md-10 mx-auto">
-                            {{ render_form(form, novalidate=True,button_map={"submit": "success"}) }}
+                            <form method="post">
+                                {% csrf_token %}
+                                {{ task_form }}
+                                <button type="submit">Submit</button>
+                            </form>
                           </div>
                       </div>
                       <div class="modal-footer">
@@ -75,7 +79,11 @@
                       </div>
                       <div class="modal-body">
                           <div class="col-lg-8 col-md-10 mx-auto">
-                            {{ render_form(work_state_form, novalidate=True,button_map={"save": "success"}) }}
+                            <form method="post">
+                                {% csrf_token %}
+                                {{ work_state_create_form }}
+                               <button type="submit">Save</button>
+                            </form>
                           </div>
                       </div>
                       <div class="modal-footer">
@@ -91,7 +99,7 @@
                         <div class="col-md-auto">
                             <div class="d-flex flex-column align-items-stretch flex-shrink-0 bg-body-tertiary" style="width: 380px;">
                                 <a  class="d-flex align-items-center flex-shrink-0 p-3  text-decoration-none border-bottom">
-                                  <span class="fs-5 fw-semibold">{{ work_state.work_state }}</span>
+                                  <span class="fs-5 fw-semibold">{{ work_state }}</span>
                                 </a>
                                 <div class="list-group scrollarea">
                                     {% for row in todos %}
