@@ -12,6 +12,7 @@
         <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
     </head>
     <body>
+    {% load crispy_forms_tags %}
         <div class="d-flex" id="wrapper">
             <div class="border-end bg-white" id="sidebar-wrapper">
                 <div class="sidebar-heading border-bottom bg-light">Task Guider<i class="bi bi-cloud-haze2"></i></div>
@@ -59,7 +60,7 @@
                           <div class="col-lg-8 col-md-10 mx-auto">
                             <form method="post">
                                 {% csrf_token %}
-                                {{ task_form }}
+                                {% crispy task_form %}
                                 <button type="submit">Submit</button>
                             </form>
                           </div>
@@ -80,7 +81,7 @@
                           <div class="col-lg-8 col-md-10 mx-auto">
                             <form method="post">
                                 {% csrf_token %}
-                                {{ work_state_create_form }}
+                                {% crispy work_state_create_form %}
                                <button type="submit">Save</button>
                             </form>
                           </div>
