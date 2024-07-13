@@ -22,8 +22,6 @@ def test(request):
 def dashboard(request):
     context = {'task_form': TaskForm(), "work_state_create_form": WorkStateCreateForm(),
                'work_states': WorkState.objects.values_list('name', flat=True)}
-    task_form = TaskForm()
-    work_state_create_form = WorkStateCreateForm()
     if request.method == "POST":
         task_form = TaskForm(request.POST)
         work_state_create_form = WorkStateCreateForm(request.POST)
@@ -35,7 +33,7 @@ def dashboard(request):
         elif work_state_create_form.is_valid():
             print(work_state_create_form.cleaned_data["name"])
             return HttpResponseRedirect("dashboard.html")
-
+    print(request.POST)
     return render(request, "dashboard.html", context)
 
 

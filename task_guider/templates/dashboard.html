@@ -58,7 +58,7 @@
                       </div>
                       <div class="modal-body">
                           <div class="col-lg-8 col-md-10 mx-auto">
-                            <form method="post">
+                            <form method="post" action="{% url 'task_guider:dashboard' %}">
                                 {% csrf_token %}
                                 {% crispy task_form %}
                                 <button type="submit">Submit</button>
@@ -94,8 +94,7 @@
                 <div class="container-fluid">
 
                     <div class="row gy-1 dashboard-scroll flex-nowrap">
-                        {% for row in work_states %}
-                            {% for work_state in row %}
+                        {% for state in work_states %}
                         <div class="col-md-auto">
                             <div class="d-flex flex-column align-items-stretch flex-shrink-0 bg-body-tertiary" style="width: 380px;">
                                 <a  class="d-flex align-items-center flex-shrink-0 p-3  text-decoration-none border-bottom">
@@ -117,7 +116,6 @@
                                         </div>
                                       </a>
                                       {% endif %}
-                                    {% endfor %}
                                     {% endfor %}
                                 </div>
                             </div>
