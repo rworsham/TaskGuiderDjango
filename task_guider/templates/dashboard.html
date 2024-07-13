@@ -58,7 +58,7 @@
                       </div>
                       <div class="modal-body">
                           <div class="col-lg-8 col-md-10 mx-auto">
-                            <form method="post" action="{% url 'task_guider:dashboard' %}">
+                            <form method="post">
                                 {% csrf_token %}
                                 {% crispy task_form %}
                                 <button type="submit">Submit</button>
@@ -81,8 +81,8 @@
                           <div class="col-lg-8 col-md-10 mx-auto">
                             <form method="post">
                                 {% csrf_token %}
-                                {% crispy work_state_create_form %}
-                               <button type="submit">Save</button>
+                                {{ work_state_create_form|crispy }}
+                               <input type="submit" value="Save">
                             </form>
                           </div>
                       </div>

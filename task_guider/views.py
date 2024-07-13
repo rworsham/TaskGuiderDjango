@@ -29,10 +29,13 @@ def dashboard(request):
             print(task_form.cleaned_data["title"])
             print(task_form.cleaned_data["subtitle"])
             print(task_form.cleaned_data["project"])
-            return HttpResponseRedirect("dashboard.html")
+            return HttpResponseRedirect("#")
         elif work_state_create_form.is_valid():
             print(work_state_create_form.cleaned_data["name"])
-            return HttpResponseRedirect("dashboard.html")
+            return HttpResponseRedirect("#")
+    else:
+        task_form = TaskForm()
+        work_state_create_form = WorkStateCreateForm()
     print(request.POST)
     return render(request, "dashboard.html", context)
 
