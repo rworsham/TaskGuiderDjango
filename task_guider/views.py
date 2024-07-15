@@ -24,23 +24,37 @@ def test(request):
 
 def dashboard(request):
     context = {'task_form': TaskForm(), "work_state_create_form": WorkStateCreateForm(),
-               'work_states': WorkState.objects.values_list('name', flat=True)}
+               'work_states': list(WorkState.objects.all()), 'tasks': list(TodoPost.objects.all())}
     if request.method == "POST":
         task_form = TaskForm(request.POST)
         work_state_create_form = WorkStateCreateForm(request.POST)
-        if task_form.is_valid():
-            print(task_form.cleaned_data["title"])
-            print(task_form.cleaned_data["subtitle"])
-            print(task_form.cleaned_data["project"])
+        if not task_form.is_valid():
+            print("task form not valid")
+            print(task_form.errors)
+            return HttpResponseRedirect("#")
+        elif task_form.is_valid():
+            new_task = TodoPost()
+            new_task.title = task_form.cleaned_data["title"]
+            new_task.subtitle = task_form.cleaned_data["subtitle"]
+            new_task.work_state = task_form.cleaned_data["work_state"]
+            new_task.body = task_form.cleaned_data["body"]
+            new_task.due_date = task_form.cleaned_data["due_date"]
+            new_task.show_on_calendar = task_form.cleaned_data["show_on_calendar"]
+            new_task.type = task_form.cleaned_data["type"]
+            new_task.project = task_form.cleaned_data["project"]
+            new_task.save()
             return HttpResponseRedirect("#")
         elif work_state_create_form.is_valid():
-            print(work_state_create_form.cleaned_data["name"])
+            new_work_state = WorkState()
+            new_work_state.name = work_state_create_form.cleaned_data["name"]
+            new_work_state.position = work_state_create_form.cleaned_data["position"]
+            new_work_state.is_hidden = work_state_create_form.cleaned_data["is_hidden"]
+            new_work_state.save()
             return HttpResponseRedirect("#")
     else:
         task_form = TaskForm()
         work_state_create_form = WorkStateCreateForm()
-    print(request.POST)
-    return render(request, "dashboard.html", context)
+        return render(request, "dashboard.html", context)
 
 
 def events(request):

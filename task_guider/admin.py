@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import TodoPost, Project, WorkState
+from .models import TodoPost, Project, WorkState, TaskType
 
 
 class TodoPostAdmin(admin.ModelAdmin):
@@ -18,6 +18,12 @@ class WorkStateAdmin(admin.ModelAdmin):
     search_fields = ("name",)
 
 
+class TaskTypeAdmin(admin.ModelAdmin):
+    list_display = ("name",)
+    search_fields = ("name",)
+
+
 admin.site.register(TodoPost, TodoPostAdmin)
 admin.site.register(Project, ProjectAdmin)
 admin.site.register(WorkState, WorkStateAdmin)
+admin.site.register(TaskType, TaskTypeAdmin)

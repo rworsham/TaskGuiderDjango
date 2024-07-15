@@ -40,7 +40,9 @@ class TodoPost(models.Model):
     date_updated = models.DateTimeField(auto_now=True)
     due_date = models.DateTimeField()
     body = models.TextField(max_length=1000)
-    type = models.TextField(max_length=50)
+    show_on_calendar = models.BooleanField(null=True, blank=True)
+    type = models.TextField(max_length=50, null=True, blank=True)
     project_name = models.ForeignKey(Project, on_delete=models.CASCADE, null=True, blank=True)
     author = models.ForeignKey(User, on_delete=models.PROTECT)
     comments = models.ForeignKey(Comment,on_delete=models.PROTECT, null=True, blank=True)
+
