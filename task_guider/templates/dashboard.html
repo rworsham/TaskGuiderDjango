@@ -102,8 +102,8 @@
                                 </a>
                                 <div class="list-group scrollarea">
                                     {% for todo in tasks %}
-                                      {% if todo.work_state == work_state.id %}
-                                      <a href="{% url 'task_guider:task' task.id %}"  class="list-group-item list-group-item-action py-3 mb-2 border rounded lh-sm" aria-current="true">
+                                      {% if todo.work_state_id == work_state.id %}
+                                      <a href="{% url 'task_guider:task' todo.id %}"  class="list-group-item list-group-item-action py-3 mb-2 border rounded lh-sm" aria-current="true">
                                         <div class="d-flex w-100 align-items-center justify-content-between">
                                           <strong class="mb-1">{{ todo.title }}</strong>
                                           <small>{{ todo.due_date }}</small>

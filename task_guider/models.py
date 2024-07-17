@@ -13,17 +13,25 @@ class Project(models.Model):
     color = models.IntegerField()
     posts = models.ManyToManyField('TodoPost', blank=True)
 
+    def __str__(self):
+        return self.name
+
 
 class WorkState(models.Model):
     name = models.CharField(max_length=100)
     position = models.IntegerField()
     is_hidden = models.CharField(choices=HIDE)
 
+    def __str__(self):
+        return self.name
+
 
 class TaskType(models.Model):
     name = models.CharField(max_length=25)
     icon = models.CharField(max_length=250)
 
+    def __str__(self):
+        return self.name
 
 class Comment(models.Model):
     body = models.CharField(max_length=500)
@@ -45,4 +53,9 @@ class TodoPost(models.Model):
     project_name = models.ForeignKey(Project, on_delete=models.CASCADE, null=True, blank=True)
     author = models.ForeignKey(User, on_delete=models.PROTECT)
     comments = models.ForeignKey(Comment,on_delete=models.PROTECT, null=True, blank=True)
+
+    def __str__(self):
+        return self.title
+
+
 

@@ -42,6 +42,7 @@ def dashboard(request):
             new_task.show_on_calendar = task_form.cleaned_data["show_on_calendar"]
             new_task.type = task_form.cleaned_data["type"]
             new_task.project = task_form.cleaned_data["project"]
+            new_task.author = request.user
             new_task.save()
             return HttpResponseRedirect("#")
         elif work_state_create_form.is_valid():
