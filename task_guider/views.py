@@ -4,8 +4,8 @@ from django.template import loader
 from django.urls import reverse
 from django.db.models import F
 from django.utils import timezone
-from .models import Project, TodoPost, WorkState, TaskType, Comment
-from .forms import TaskForm, WorkStateCreateForm
+from .models import Project, TaskPost, WorkState, TaskType, Comment
+from .forms import CreateTaskForm, WorkStateCreateForm, EditTaskForm
 import json
 import plotly.express as px
 from django.db import connection
@@ -13,7 +13,7 @@ import pandas as pd
 
 
 def test(request):
-    context = {'form': TaskForm()}
+    context = {'form': CreateTaskForm()}
     # if form.is_valid():
     #     for x in form.cleaned_data:
     #         print(x)
@@ -23,17 +23,17 @@ def test(request):
 
 
 def dashboard(request):
-    context = {'task_form': TaskForm(), "work_state_create_form": WorkStateCreateForm(),
-               'work_states': list(WorkState.objects.all()), 'tasks': list(TodoPost.objects.all())}
+    context = {'task_form': CreateTaskForm(), "work_state_create_form": WorkStateCreateForm(),
+               'work_states': list(WorkState.objects.all()), 'tasks': list(TaskPost.objects.all())}
     if request.method == "POST":
-        task_form = TaskForm(request.POST)
+        task_form = CreateTaskForm(request.POST)
         work_state_create_form = WorkStateCreateForm(request.POST)
         if not task_form.is_valid():
             print("task form not valid")
             print(task_form.errors)
             return HttpResponseRedirect("#")
         elif task_form.is_valid():
-            new_task = TodoPost()
+            new_task = TaskPost()
             new_task.title = task_form.cleaned_data["title"]
             new_task.subtitle = task_form.cleaned_data["subtitle"]
             new_task.work_state = task_form.cleaned_data["work_state"]
@@ -53,7 +53,7 @@ def dashboard(request):
             new_work_state.save()
             return HttpResponseRedirect("#")
     else:
-        task_form = TaskForm()
+        task_form = CreateTaskForm()
         work_state_create_form = WorkStateCreateForm()
         return render(request, "dashboard.html", context)
 
@@ -117,8 +117,20 @@ def settings(request):
 
 
 def task(request,id):
-    context = {}
-    return render(request, "task.html", context)
+    task_post = get_object_or_404(TaskPost, id=id)
+    context = {'task': task_post, "task_edit_form": EditTaskForm()}
+    if request.method == "POST":
+        task_edit_form = EditTaskForm(request.POST)
+        if not task_edit_form.is_valid():
+            print(task_edit_form.errors)
+            return HttpResponseRedirect('#')
+        elif task_edit_form.is_valid():
+            task_edit_form.save()
+            return HttpResponseRedirect('#')
+
+    else:
+        task_edit_form = EditTaskForm()
+        return render(request, "task.html", context)
 
 
 def calendar(request):

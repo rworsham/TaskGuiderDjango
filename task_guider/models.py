@@ -11,7 +11,7 @@ HIDE = (
 class Project(models.Model):
     name = models.CharField(max_length=100)
     color = models.IntegerField()
-    posts = models.ManyToManyField('TodoPost', blank=True)
+    posts = models.ManyToManyField('TaskPost', blank=True)
 
     def __str__(self):
         return self.name
@@ -37,10 +37,10 @@ class Comment(models.Model):
     body = models.CharField(max_length=500)
     date_created = models.DateTimeField(auto_now_add=True)
     author = models.ForeignKey(User, on_delete=models.PROTECT)
-    parent_post = models.ForeignKey('TodoPost', on_delete=models.PROTECT)
+    parent_post = models.ForeignKey('TaskPost', on_delete=models.PROTECT)
 
 
-class TodoPost(models.Model):
+class TaskPost(models.Model):
     title = models.CharField(max_length=100, unique=True)
     subtitle = models.CharField(max_length=100)
     work_state = models.ForeignKey(WorkState, on_delete=models.PROTECT, null=True, blank=True)

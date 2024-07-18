@@ -1,10 +1,10 @@
 from django import forms
 from django.forms import ModelForm
-from .models import WorkState, TaskType, Project, Comment
+from .models import WorkState, TaskType, Project, Comment, TaskPost
 from subscribed.models import Subscribed, UnSubscribed
 
 
-class TaskForm(forms.Form):
+class CreateTaskForm(forms.Form):
     title = forms.CharField(label="Title", required=True, max_length=100)
     subtitle = forms.CharField(label="Subtitle", required=True, max_length=100)
     work_state = forms.ModelChoiceField(label="Select Work State",
@@ -18,18 +18,10 @@ class TaskForm(forms.Form):
                                      queryset=Project.objects.all(), to_field_name='name', required=True)
 
 
-class TaskEditForm(forms.Form):
-    title = forms.CharField(label="Title", required=True, max_length=100)
-    subtitle = forms.CharField(label="Subtitle", required=True, max_length=100)
-    work_state = forms.ModelChoiceField(label="Select Work State",
-                                        queryset=WorkState.objects.values_list('name', flat=True), required=True)
-    body = forms.CharField(label="Content", widget=forms.Textarea(attrs={'name': 'body', 'rows': '3', 'cols': '5'}))
-    due_date = forms.DateField()
-    show_on_calendar = forms.BooleanField(label="Show on Calendar?")
-    type = forms.ModelChoiceField(label="Select Task Type if applicable",
-                                  queryset=TaskType.objects.values_list('name', flat=True), required=False)
-    project = forms.ModelChoiceField(label="Select Project",
-                                     queryset=Project.objects.values_list('name', flat=True), required=True)
+class EditTaskForm(ModelForm):
+    class Meta:
+        model = TaskPost
+        fields = ["title", "subtitle", "work_state", "body", "due_date", "show_on_calendar", "type", "project_name"]
 
 
 class LoginForm(forms.Form):
@@ -63,5 +55,5 @@ class WorkStateCreateForm(ModelForm):
 
 
 class WorkStateChangeFrom(forms.Form):
-    new_state = forms.ModelChoiceField(label="Select Work State",
-                                       queryset=WorkState.objects.values_list("name", flat=True), required=True)
+    new_work_state = forms.ModelChoiceField(label="Select Work State",
+                                        queryset=WorkState.objects.all(), to_field_name='name', required=True)
