@@ -12,7 +12,7 @@
         <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
     </head>
     <body>
-    {% load crispy_form_tags %}
+    {% load crispy_forms_tags %}
         <div class="d-flex" id="wrapper">
             <div class="border-end bg-white" id="sidebar-wrapper">
                 <div class="sidebar-heading border-bottom bg-light">WorkFlo<i class="bi bi-cloud-haze2"></i></div>
@@ -30,12 +30,16 @@
                         <button class="btn btn-success " data-bs-toggle="modal" data-bs-target="#select_work_state"><i class="bi bi-arrows-expand-vertical"></i> Change Work State</button>
                         <button class="btn btn-success " data-bs-toggle="modal" data-bs-target="#edit-todo"><i class="bi bi-pencil-square"></i> Edit</button>
                         {% if user_is_subscribed_to_updates %}
-                            {{ render_form(unsubscribe_form, novalidate=True,button_map={"unsubscribe": "success"}) }}
+                            <form>
+                                <input type="submit" value="Subscribe to Updates">
+                            </form>
                         {% endif %}
                         {% if not user_is_subscribed_to_updates %}
-                            {{ render_form(subscribe_form, novalidate=True,button_map={"subscribe": "success"}) }}
+                            <form>
+                                <input type="submit" value="Unsubscribe to Updates">
+                            </form>
                         {% endif %}
-                        <button class="btn btn-danger"><a href="{{ url_for('delete_todo', id=todo.id) }}" class="align-bottom btn-link-decor-none"><i class="bi bi-trash text-start"></i></a></button>
+                        <button class="btn btn-danger"><a href="{% url 'task_guider:delete' id=todo.id %}" class="align-bottom btn-link-decor-none"><i class="bi bi-trash text-start"></i></a></button>
                         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
                             <ul class="navbar-nav ms-auto mt-2 mt-lg-0">
@@ -44,9 +48,9 @@
                                     <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="bi bi-gear-wide"></i></a>
                                     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                         <a class="dropdown-item" href="#!">Action</a>
-                                        <a class="dropdown-item" href="{{ url_for('settings') }}">Settings</a>
+                                        <a class="dropdown-item" href="{% url 'task_guider:settings' %}">Settings</a>
                                         <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item" href="{{ url_for('logout') }}">Logout</a>
+                                        <a class="dropdown-item" href="{% url 'task_guider:logout' %}">Logout</a>
                                     </div>
                                 </li>
                             </ul>
@@ -88,13 +92,6 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                       </div>
                       <div class="modal-body">
-                        {% with messages = get_flashed_messages() %}
-                          {% if messages %}
-                            {% for message in messages %}
-                                <p class="flash">{{ message }}</p>
-                            {% endfor %}
-                          {% endif %}
-                        {% endwith %}
                           <div class="col-lg-8 col-md-10 mx-auto">
                             {{ render_form(edit_form, novalidate=True,button_map={"save_updates": "success"}) }}
                           </div>

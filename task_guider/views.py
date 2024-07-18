@@ -116,8 +116,9 @@ def settings(request):
     pass
 
 
-def task(request):
-    pass
+def task(request,id):
+    context = {}
+    return render(request, "task.html", context)
 
 
 def calendar(request):

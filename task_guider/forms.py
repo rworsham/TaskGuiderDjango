@@ -1,6 +1,7 @@
 from django import forms
 from django.forms import ModelForm
 from .models import WorkState, TaskType, Project, Comment
+from subscribed.models import Subscribed, UnSubscribed
 
 
 class TaskForm(forms.Form):
@@ -64,12 +65,3 @@ class WorkStateCreateForm(ModelForm):
 class WorkStateChangeFrom(forms.Form):
     new_state = forms.ModelChoiceField(label="Select Work State",
                                        queryset=WorkState.objects.values_list("name", flat=True), required=True)
-
-
-class SubscribeUser(forms.Form):
-    pass
-
-
-class UnsubscribeUserForm(forms.Form):
-    pass
-
