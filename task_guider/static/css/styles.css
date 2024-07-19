@@ -10905,12 +10905,12 @@ body.sb-sidenav-toggled #wrapper #sidebar-wrapper {
     width: 100%;
     height: 93vh;
 }
-.todo-scroll {
+.task-scroll {
     overflow-y: auto;
     width: auto;
     height: auto;
 }
-.project-todo-scroll {
+.project-task-scroll {
     overflow-y: auto;
     width: auto;
     max-height: 50;

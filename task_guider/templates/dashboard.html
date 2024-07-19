@@ -27,7 +27,7 @@
                 <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
                     <div class="container-fluid gap-2">
                         <button class="btn btn-secondary" id="sidebarToggle"><i class="bi bi-chevron-double-left"></i></button>
-                        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#add-todo"><i class="bi bi-patch-plus"></i> Add Todo</button>
+                        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#add-task"><i class="bi bi-patch-plus"></i> Add Task</button>
                         {% if request.user.is_authenticated and request.user.is_staff %}
                         <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#work-state"><i class="bi bi-patch-plus"></i> Add Work State</button>
                         {% endif %}
@@ -49,11 +49,11 @@
                     </div>
                 </nav>
 
-                <div class="modal fade" id="add-todo" tabindex="-1" aria-labelledby="add-todo-label" aria-hidden="true">
+                <div class="modal fade" id="add-task" tabindex="-1" aria-labelledby="add-task-label" aria-hidden="true">
                   <div class="modal-dialog">
                     <div class="modal-content">
                       <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="add-todo-label">Add Todo</h1>
+                        <h1 class="modal-title fs-5" id="add-task-label">Add Task</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                       </div>
                       <div class="modal-body">
@@ -61,7 +61,7 @@
                             <form method="post">
                                 {% csrf_token %}
                                 {{ task_form|crispy }}
-                                <input type="submit" value="Save">
+                                <input type="submit" name="task_form" value="Save">
                             </form>
                           </div>
                       </div>
@@ -82,7 +82,7 @@
                             <form method="post">
                                 {% csrf_token %}
                                 {{ work_state_create_form|crispy }}
-                               <input type="submit" value="Save">
+                               <input type="submit" name="workstate_form" value="Save">
                             </form>
                           </div>
                       </div>
@@ -101,17 +101,17 @@
                                   <span class="fs-5 fw-semibold">{{ work_state.name }}</span>
                                 </a>
                                 <div class="list-group scrollarea">
-                                    {% for todo in tasks %}
-                                      {% if todo.work_state_id == work_state.id %}
-                                      <a href="{% url 'task_guider:task' todo.id %}"  class="list-group-item list-group-item-action py-3 mb-2 border rounded lh-sm" aria-current="true">
+                                    {% for task in tasks %}
+                                      {% if task.work_state_id == work_state.id %}
+                                      <a href="{% url 'task_guider:task' task.id %}"  class="list-group-item list-group-item-action py-3 mb-2 border rounded lh-sm" aria-current="true">
                                         <div class="d-flex w-100 align-items-center justify-content-between">
-                                          <strong class="mb-1">{{ todo.title }}</strong>
-                                          <small>{{ todo.due_date }}</small>
+                                          <strong class="mb-1">{{ task.title }}</strong>
+                                          <small>{{ task.due_date }}</small>
                                         </div>
-                                          <div class="col-8 mb-1 small fst-italic">{{ todo.subtitle }}</div>
+                                          <div class="col-8 mb-1 small fst-italic">{{ task.subtitle }}</div>
                                         <div class="d-flex w-100 align-items-center justify-content-between">
-                                            <small>{{ todo.project.project }}</small>
-                                            <small>{{ todo.author.name }}</small>
+                                            <small>{{ task.project.project }}</small>
+                                            <small>{{ task.author.name }}</small>
                                         </div>
                                       </a>
                                       {% endif %}
@@ -128,7 +128,7 @@
         {% if form_error %}
         <script type="text/javascript">
             window.onload = () => {
-              const myModal = new bootstrap.Modal('#add-todo');
+              const myModal = new bootstrap.Modal('#add-task');
               myModal.show();
             }
         </script>
