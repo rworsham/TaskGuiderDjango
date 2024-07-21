@@ -1,7 +1,6 @@
 from django import forms
 from django.forms import ModelForm
 from .models import WorkState, TaskType, Project, Comment, TaskPost
-from subscribed.models import Subscribed, UnSubscribed
 
 
 class CreateTaskForm(forms.Form):

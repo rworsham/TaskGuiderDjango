@@ -2,10 +2,11 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, Http404, HttpResponseRedirect, JsonResponse
 from django.template import loader
 from django.urls import reverse
-from django.db.models import F
+from django.db.models import F, Q
 from django.utils import timezone
 from .models import Project, TaskPost, WorkState, TaskType, Comment
 from .forms import CreateTaskForm, WorkStateCreateForm, EditTaskForm, WorkStateChangeFrom, CommentForm
+from subscribed.models import Subscribed
 import json
 import plotly.express as px
 from django.db import connection
@@ -122,8 +123,11 @@ def settings(request):
 
 def task(request,id):
     task_post = get_object_or_404(TaskPost, id=id)
+    is_subscribed = Subscribed.objects.filter(Q(email=request.user) & Q(subscribed_object=task_post)).exists()
+    print(is_subscribed)
     context = {'task': task_post, "task_edit_form": EditTaskForm(), "work_state_change_form": WorkStateChangeFrom(),
-               "comments": list(Comment.objects.all()), "comment_form": CommentForm()}
+               "comments": list(Comment.objects.filter(parent_post=id)), "comment_form": CommentForm(),
+               "subscription_status": is_subscribed}
     if request.method == "POST":
         task_edit_form = EditTaskForm(request.POST)
         work_state_change_form = WorkStateChangeFrom(request.POST)
@@ -155,6 +159,16 @@ def task(request,id):
                 new_comment.parent_post = task_post
                 new_comment.save()
                 return HttpResponseRedirect('#')
+        if "subscribe" in request.POST:
+            subscribe_user = Subscribed()
+            subscribe_user.email = request.user
+            subscribe_user.subscribed_object = task_post
+            subscribe_user.save()
+            return HttpResponseRedirect('#')
+        if "unsubscribe" in request.POST:
+            unsubscribe_user = Subscribed.objects.filter(Q(email=request.user) & Q(subscribed_object=task_post))
+            unsubscribe_user.delete()
+            return HttpResponseRedirect('#')
     else:
         task_edit_form = EditTaskForm()
         work_state_change_form = WorkStateChangeFrom()
