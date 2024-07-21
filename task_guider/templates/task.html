@@ -92,7 +92,7 @@
                             <form method="post">
                                 {% csrf_token %}
                                 {{ task_edit_form|crispy }}
-                                <input type="submit" value="Save">
+                                <input type="submit" name="task_edit_form" value="Save">
                             </form>
                           </div>
                       </div>
@@ -120,8 +120,8 @@
                           <div>
                               <form method="post">
                                 {% csrf_token %}
-                                {{ task_edit_form|crispy }}
-                                <input type="submit" name="comment_form" value="Save">
+                                {{ comment_form|crispy }}
+                                <input type="submit" name="comment_form" value="Add Comment">
                             </form>
                           </div>
                       </div>
@@ -152,21 +152,17 @@
                       </div>
 
                         <div class="col-md-3 comment-scroll border border-top-0 border-secondary-subtle rounded-bottom pt-1">
-                            {% if task.comments %}
-                                {% for row in comments %}
-                                    {% for comment in row %}
-                                        {% if comment.post_id == task.id %}
+                            {% if comments %}
+                                {% for comment in comments %}
                                         <div class="list-group overflow-auto pt-1">
                                             <a class="list-group-item list-group-item-action flex-column align-items-start ">
                                             <div class="d-flex w-100 align-bottom">
-                                              <p class="mb-1 fs-5 fw-medium">{{ comment.comment_author.name }}<small class="text-muted mb-1 fs-6 fw-light">    {{ comment.date }}</small></p>
+                                              <p class="mb-1 fs-5 fw-medium">{{ comment.author }}<small class="text-muted mb-1 fs-6 fw-light">    {{ comment.date_created }}</small></p>
                                             </div>
-                                            <p class="mb-1 fst-italic">{{ comment.text }}</p>
+                                            <p class="mb-1 fst-italic">{{ comment.body }}</p>
                                           </a>
                                         </div>
-                                    {% endif %}
                                 {% endfor %}
-                            {% endfor %}
                           {% endif %}
                         </div>
                     </div>

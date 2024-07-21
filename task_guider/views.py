@@ -5,7 +5,7 @@ from django.urls import reverse
 from django.db.models import F
 from django.utils import timezone
 from .models import Project, TaskPost, WorkState, TaskType, Comment
-from .forms import CreateTaskForm, WorkStateCreateForm, EditTaskForm, WorkStateChangeFrom
+from .forms import CreateTaskForm, WorkStateCreateForm, EditTaskForm, WorkStateChangeFrom, CommentForm
 import json
 import plotly.express as px
 from django.db import connection
@@ -122,18 +122,20 @@ def settings(request):
 
 def task(request,id):
     task_post = get_object_or_404(TaskPost, id=id)
-    context = {'task': task_post, "task_edit_form": EditTaskForm(), "work_state_change_form": WorkStateChangeFrom()}
+    context = {'task': task_post, "task_edit_form": EditTaskForm(), "work_state_change_form": WorkStateChangeFrom(),
+               "comments": list(Comment.objects.all()), "comment_form": CommentForm()}
     if request.method == "POST":
         task_edit_form = EditTaskForm(request.POST)
         work_state_change_form = WorkStateChangeFrom(request.POST)
-        if task_edit_form in request.POST:
+        comment_form = CommentForm(request.POST)
+        if "task_edit_form" in request.POST:
             if not task_edit_form.is_valid():
                 print(task_edit_form.errors)
                 return HttpResponseRedirect('#')
             elif task_edit_form.is_valid():
                 task_edit_form.save()
                 return HttpResponseRedirect('#')
-        if work_state_change_form in request.POST:
+        if "work_state_change_form" in request.POST:
             if not work_state_change_form.is_valid():
                 print(work_state_change_form.errors)
                 return HttpResponseRedirect('#')
@@ -142,9 +144,21 @@ def task(request,id):
                 new_work_state.work_state = work_state_change_form.cleaned_data['new_work_state']
                 new_work_state.save()
                 return HttpResponseRedirect('#')
+        if "comment_form" in request.POST:
+            if not comment_form.is_valid():
+                print(comment_form.errors)
+                return HttpResponseRedirect('#')
+            elif comment_form.is_valid():
+                new_comment = Comment()
+                new_comment.body = comment_form.cleaned_data['body']
+                new_comment.author = request.user
+                new_comment.parent_post = task_post
+                new_comment.save()
+                return HttpResponseRedirect('#')
     else:
         task_edit_form = EditTaskForm()
         work_state_change_form = WorkStateChangeFrom()
+        comment_form = CommentForm()
         return render(request, "task.html", context)
 
 
