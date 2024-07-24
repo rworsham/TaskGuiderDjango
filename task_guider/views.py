@@ -164,10 +164,12 @@ def task(request,id):
             subscribe_user.email = request.user
             subscribe_user.subscribed_object = task_post
             subscribe_user.save()
+            print("sub")
             return HttpResponseRedirect('#')
         if "unsubscribe" in request.POST:
             unsubscribe_user = Subscribed.objects.filter(Q(email=request.user) & Q(subscribed_object=task_post))
             unsubscribe_user.delete()
+            print("unsub")
             return HttpResponseRedirect('#')
     else:
         task_edit_form = EditTaskForm()

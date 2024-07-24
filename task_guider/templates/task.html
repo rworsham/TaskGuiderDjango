@@ -27,18 +27,17 @@
                 <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
                     <div class="container-fluid gap-2">
                         <button class="btn btn-secondary" id="sidebarToggle"><i class="bi bi-chevron-double-left"></i></button>
-                        <button class="btn btn-success " data-bs-toggle="modal" data-bs-target="#select_work_state"><i class="bi bi-arrows-expand-vertical"></i> Change Work State</button>
-                        <button class="btn btn-success " data-bs-toggle="modal" data-bs-target="#edit-task"><i class="bi bi-pencil-square"></i> Edit</button>
-                        {% if not is_subscribed %}
-                            <form method="post">
-                                {% csrf_token %}
-                                <input type="submit" name="subscribe" value="Subscribe to Updates">
-                            </form>
-                        {% endif %}
+                        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#select_work_state"><i class="bi bi-arrows-expand-vertical"></i> Change Work State</button>
+                        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#edit-task"><i class="bi bi-pencil-square"></i> Edit</button>
                         {% if is_subscribed %}
                             <form method="post">
                                 {% csrf_token %}
-                                <input type="submit" name="unsubscribe" value="Unsubscribe to Updates">
+                                <button class="btn btn-success" type="submit" name="unsubscribe" value="Unsubscribe to Updates">Unsubscribe to Updates</button>
+                            </form>
+                        {% else %}
+                            <form method="post">
+                                {% csrf_token %}
+                                <button class="btn btn-success" type="submit" name="subscribe" value="Subscribe to Updates">Subscribe to Updates</button>
                             </form>
                         {% endif %}
                         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
