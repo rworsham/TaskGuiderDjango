@@ -11,7 +11,6 @@ HIDE = (
 class Project(models.Model):
     name = models.CharField(max_length=100)
     color = models.IntegerField()
-    posts = models.ManyToManyField('TaskPost', blank=True)
 
     def __str__(self):
         return self.name

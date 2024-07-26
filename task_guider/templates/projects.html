@@ -6,16 +6,16 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>WorkFlo</title>
-        <link rel="icon" href="{{ url_for('static', filename='assets/favicon.svg') }}" type="image/svg+xml">
+        <title>Task Guider</title>
+        <link rel="icon" href="{% static 'assets/favicon.svg' %}" type="image/svg+xml">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
         <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
     </head>
     <body>
-        {% load crispy_form_tags %}
+        {% load crispy_forms_tags %}
         <div class="d-flex" id="wrapper">
             <div class="border-end bg-white" id="sidebar-wrapper">
-                <div class="sidebar-heading border-bottom bg-light">WorkFlo<i class="bi bi-cloud-haze2"></i></div>
+                <div class="sidebar-heading border-bottom bg-light">Task Guider<i class="bi bi-cloud-haze2"></i></div>
                 <div class="list-group list-group-flush">
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" href="{% url 'task_guider:overview' %}">Overview</a>
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" href="{% url 'task_guider:dashboard' %}">Dashboard</a>
@@ -54,25 +54,10 @@
                       </div>
                       <div class="modal-body">
                         <div class="row">
-                          {% with messages = get_flashed_messages() %}
-                          {% if messages %}
-                          {% for message in messages %}
-                          <p class="flash red text-center">{{ message }}</p>
-                          {% endfor %}
-                          {% endif %}
-                          {% endwith %}
                             <form class="row g-3" method=post>
-                                <div class="col-10">
-                                    <input class="form-control" type="text" placeholder="ProjectName" name="ProjectName" aria-label="default input example">
-                                </div>
-                                <div class="col-2">
-                                    <input type="color" class="form-control form-control-color" name="ColorInput" value="#563d7c" title="Choose your color">
-                                </div>
-                                <div class="row g-3 text-center">
-                                    <div class="col-md">
-                                        <button type="submit" name="submit" class="btn btn-success mb-3">Save</button>
-                                    </div>
-                                </div>
+                               {% csrf_token %}
+                                {{ project_form|crispy }}
+                               <input type="submit" name="project_form" value="Save">
                             </form>
                         </div>
                       </div>
@@ -81,18 +66,16 @@
                 </div>
                 <div class="container-fluid dashboard-scroll">
                    <div class="row">
-                       {% for row in projects %}
-                       {% for project in row %}
+                       {% for project in projects %}
                         <div class="col-lg-2 mt-3">
                             <div class="card h-100">
-                                <div class="card-header" style="background-color: {{project.project_color}};"></div>
+                                <div class="card-header" style="background-color: {{project.color}};"></div>
                                     <div class="card-body bg-light">
-                                        <h5 class="card-title">{{ project.project }}</h5>
+                                        <h5 class="card-title">{{ project.name }}</h5>
                                         <a href="{% url 'task_guider:project_view' project.id %}" class="stretched-link"></a>
                                     </div>
                             </div>
                         </div>
-                       {% endfor %}
                        {% endfor %}
                     </div>
                 </div>

@@ -5,7 +5,7 @@ from django.urls import reverse
 from django.db.models import F, Q
 from django.utils import timezone
 from .models import Project, TaskPost, WorkState, TaskType, Comment
-from .forms import CreateTaskForm, WorkStateCreateForm, EditTaskForm, WorkStateChangeFrom, CommentForm
+from .forms import CreateTaskForm, WorkStateCreateForm, EditTaskForm, WorkStateChangeFrom, CommentForm, ProjectForm
 from subscribed.models import Subscribed
 import json
 import plotly.express as px
@@ -42,7 +42,7 @@ def dashboard(request):
                 new_task.due_date = task_form.cleaned_data["due_date"]
                 new_task.show_on_calendar = task_form.cleaned_data["show_on_calendar"]
                 new_task.type = task_form.cleaned_data["type"]
-                new_task.project = task_form.cleaned_data["project"]
+                new_task.project_name = task_form.cleaned_data["project"]
                 new_task.author = request.user
                 new_task.save()
                 return HttpResponseRedirect("#")
@@ -105,12 +105,26 @@ def bar_chart_todo(request):
     return JsonResponse(json.loads(graphJSON))
 
 
-def project_view(request):
-    pass
+def project_view(request, id):
+    project = get_object_or_404(Project, id=id)
+    context = {"project": project, "work_state": list(WorkState.objects.all())}
+    return render(request, "project_view.html", context)
 
 
 def projects(request):
-    pass
+    context = {"projects": list(Project.objects.all()), "project_form": ProjectForm()}
+    if request.method == "POST":
+        project_form = ProjectForm(request.POST)
+        if "project_form" in request.POST:
+            if not project_form.is_valid():
+                print(project_form.errors)
+                return HttpResponseRedirect('#')
+            elif project_form.is_valid():
+                project_form.save()
+                return HttpResponseRedirect('#')
+    else:
+        project_form = ProjectForm()
+        return render(request, "projects.html", context)
 
 
 def register(request):
@@ -161,13 +175,13 @@ def task(request,id):
                 return HttpResponseRedirect('#')
         if "subscribe" in request.POST:
             subscribe_user = Subscribed()
-            subscribe_user.email = request.user
-            subscribe_user.subscribed_object = task_post
+            subscribe_user.email_id = request.user.id
+            subscribe_user.subscribed_object_id = task_post.id
             subscribe_user.save()
             print("sub")
             return HttpResponseRedirect('#')
         if "unsubscribe" in request.POST:
-            unsubscribe_user = Subscribed.objects.filter(Q(email=request.user) & Q(subscribed_object=task_post))
+            unsubscribe_user = Subscribed.objects.filter(Q(email=request.user.id) & Q(subscribed_object=task_post.id))
             unsubscribe_user.delete()
             print("unsub")
             return HttpResponseRedirect('#')

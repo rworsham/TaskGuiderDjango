@@ -6,7 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>WorkFlo</title>
+        <title>Task Guider</title>
         <link rel="icon" href="{% static 'assets/favicon.svg' %}" type="image/svg+xml">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
         <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
@@ -47,16 +47,16 @@
 
                 <div class="container-fluid">
                     <div class="row">
-                        <h1 class="text-decoration-underline d-flex justify-content-center text-center">{{ project.project }}</h1>
+                        <h1 class="text-decoration-underline d-flex justify-content-center text-center">{{ project.name }}</h1>
                         {% for work_state in work_states %}
-                        <div class="accordion" id="accordion{{work_state[0]}}">
+                        <div class="accordion" id="accordion{{work_state}}">
                           <div class="accordion-item">
                             <h2 class="accordion-header">
-                              <button class="accordion-button " type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne{{work_state[0]}}" aria-expanded="true" aria-controls="collapseOne">
-                                {{work_state[1]}}
+                              <button class="accordion-button " type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne{{work_state}}" aria-expanded="true" aria-controls="collapseOne">
+                                {{work_state}}
                               </button>
                             </h2>
-                            <div id="collapseOne{{work_state[0]}}" class="accordion-collapse collapse" data-bs-parent="#accordion{{work_state[0]}}">
+                            <div id="collapseOne{{work_state}}" class="accordion-collapse collapse" data-bs-parent="#accordion{{work_state}}">
                               <div class="accordion-body" style="height: 50;">
                                   <div class="list-group ">
                                       <ul class="list-group list-group-horizontal">
@@ -66,19 +66,17 @@
                                                 <li class="list-group-item list-group-item-secondary col-2 text-center">Due Date</li>
                                                 <li class="list-group-item list-group-item-secondary col-3 text-center">Creator</li>
                                       </ul>
-                                      {% for row in project_todo_list %}
-                                        {% for todo in row %}
-                                            {% if todo.work_state == work_state[0] %}
+                                      {% for task in project_task_list %}
+                                            {% if task.work_state == work_state %}
                                             <ul class="list-group list-group-horizontal position-relative">
-                                                <li><a  href="{{ url_for('work_view', id=todo.id) }}" class="stretched-link"></a></li>
-                                                <li class="list-group-item col-1 text-center">{{ todo.id }}</li>
-                                                <li class="list-group-item col-4 text-center">{{todo.title}}</li>
-                                                <li class="list-group-item col-2 text-center">{{todo.date_created}}</li>
-                                                <li class="list-group-item col-2 text-center">{{todo.due_date}}</li>
-                                                <li class="list-group-item col-3 text-center">{{todo.author.name}}</li>
+                                                <li><a  href="{% url 'task' id=task.id %}" class="stretched-link"></a></li>
+                                                <li class="list-group-item col-1 text-center">{{task.id }}</li>
+                                                <li class="list-group-item col-4 text-center">{{task.title}}</li>
+                                                <li class="list-group-item col-2 text-center">{{task.date_created}}</li>
+                                                <li class="list-group-item col-2 text-center">{{task.due_date}}</li>
+                                                <li class="list-group-item col-3 text-center">{{task.author.name}}</li>
                                             </ul>
                                             {% endif %}
-                                        {% endfor %}
                                       {% endfor %}
                                   </div>
                               </div>
