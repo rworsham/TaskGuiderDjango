@@ -4,7 +4,6 @@ from . import views
 
 app_name = "task_guider"
 urlpatterns = [
-    path("", views.test, name="test"),
     path("dashboard", views.dashboard, name="dashboard"),
     path("events", views.events, name="events"),
     path("login", views.login, name="login"),
