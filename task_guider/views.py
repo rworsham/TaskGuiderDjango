@@ -4,8 +4,10 @@ from django.template import loader
 from django.urls import reverse
 from django.db.models import F, Q
 from django.utils import timezone
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from .models import Project, TaskPost, WorkState, TaskType, Comment
-from .forms import CreateTaskForm, WorkStateCreateForm, EditTaskForm, WorkStateChangeFrom, CommentForm, ProjectForm
+from .forms import CreateTaskForm, WorkStateCreateForm, EditTaskForm, WorkStateChangeFrom, CommentForm, ProjectForm, LoginForm
 from subscribed.models import Subscribed
 import json
 import plotly.express as px
@@ -13,16 +15,30 @@ from django.db import connection
 import pandas as pd
 
 
-def test(request):
-    context = {'form': CreateTaskForm()}
-    # if form.is_valid():
-    #     for x in form.cleaned_data:
-    #         print(x)
-    # else:
-    #     return render(request, "task_guider/test.html")
-    return render(request, "test.html", context)
+def login_page(request):
+    context = {"login_form": LoginForm()}
+    if request.method == "POST":
+        login_form = LoginForm(request.POST)
+        if "login_request" in request.POST:
+            if not login_form.is_valid():
+                print(login_form.errors)
+                HttpResponseRedirect("#")
+            elif login_form.is_valid():
+                username = login_form.cleaned_data["username"]
+                password = login_form.cleaned_data["password"]
+                user = authenticate(request, username=username, password=password)
+                if user is not None:
+                    login(request, user)
+                    return redirect('task_guider:dashboard')
+                else:
+                    print("user is none or incorrect creds")
+                    HttpResponseRedirect("#")
+    else:
+        login_form = LoginForm()
+        return render(request, "login.html", context)
 
 
+@login_required
 def dashboard(request):
     context = {'task_form': CreateTaskForm(), "work_state_create_form": WorkStateCreateForm(),
                'work_states': list(WorkState.objects.all()), 'tasks': list(TaskPost.objects.all())}
@@ -63,19 +79,18 @@ def dashboard(request):
         return render(request, "dashboard.html", context)
 
 
+@login_required
 def events(request):
     pass
 
 
-def login(request):
-    pass
-
-
+@login_required
 def overview(request):
     bar_chart = bar_chart_todo()
     return render(request, 'overview.html', {bar_chart: bar_chart})
 
 
+@login_required
 def bar_chart_todo(request):
     # Query TodoPost and WorkState data
     with connection.cursor() as cursor:
@@ -105,12 +120,14 @@ def bar_chart_todo(request):
     return JsonResponse(json.loads(graphJSON))
 
 
+@login_required
 def project_view(request, id):
     project = get_object_or_404(Project, id=id)
     context = {"project": project, "work_state": list(WorkState.objects.all())}
     return render(request, "project_view.html", context)
 
 
+@login_required
 def projects(request):
     context = {"projects": list(Project.objects.all()), "project_form": ProjectForm()}
     if request.method == "POST":
@@ -127,14 +144,17 @@ def projects(request):
         return render(request, "projects.html", context)
 
 
+@login_required
 def register(request):
     pass
 
 
+@login_required
 def settings(request):
     pass
 
 
+@login_required
 def task(request,id):
     task_post = get_object_or_404(TaskPost, id=id)
     is_subscribed = Subscribed.objects.filter(Q(email=request.user) & Q(subscribed_object=task_post)).exists()
@@ -192,13 +212,18 @@ def task(request,id):
         return render(request, "task.html", context)
 
 
+@login_required
 def calendar(request):
     pass
 
 
-def logout(request):
-    pass
+@login_required
+def logout_user(request):
+    logout(request)
+    return redirect("task_guider:login_page")
 
+
+@login_required
 def download_file(request,task_id,file_id):
     task = get_object_or_404(TaskPost, pk=task_id)
 #    file = get_object_or_404() decide where files are served from

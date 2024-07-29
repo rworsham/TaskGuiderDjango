@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import ModelForm
-from .models import WorkState, TaskType, Project, Comment, TaskPost
+from .models import WorkState, TaskType, Project, Comment, TaskPost, User
 
 
 class CreateTaskForm(forms.Form):
@@ -24,13 +24,15 @@ class EditTaskForm(ModelForm):
 
 
 class LoginForm(forms.Form):
-    email = forms.EmailField(label="Email Address")
-    password = forms.PasswordInput()
+    username = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Username'}), required=True)
+    password = forms.CharField(
+        widget=forms.PasswordInput(attrs={'placeholder': 'Password'}), required=True)
 
 
 class RegistrationForm(forms.Form):
     email = forms.EmailField(label="Email Address", required=True)
-    password = forms.PasswordInput()
+    password = forms.CharField(
+        widget=forms.PasswordInput(attrs={'placeholder': 'Entert your password'}), required=True)
     name = forms.CharField(max_length=100, required=True)
     is_admin = forms.BooleanField(label="Set Admin")
 
