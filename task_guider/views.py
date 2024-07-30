@@ -81,7 +81,8 @@ def dashboard(request):
 
 @login_required
 def events(request):
-    pass
+    context = {}
+    return render(request, "events.html", context)
 
 
 @login_required
