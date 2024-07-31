@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, Http404, HttpResponseRedirect, JsonResponse
 from django.template import loader
 from django.urls import reverse
-from django.db.models import F, Q
+from django.db.models import F, Q, Count
 from django.utils import timezone
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -10,6 +10,7 @@ from .models import Project, TaskPost, WorkState, TaskType, Comment
 from .forms import CreateTaskForm, WorkStateCreateForm, EditTaskForm, WorkStateChangeFrom, CommentForm, ProjectForm, LoginForm
 from subscribed.models import Subscribed
 import json
+import plotly
 import plotly.express as px
 from django.db import connection
 import pandas as pd
@@ -87,38 +88,30 @@ def events(request):
 
 @login_required
 def overview(request):
-    bar_chart = bar_chart_todo()
-    return render(request, 'overview.html', {bar_chart: bar_chart})
+    bar_chart = bar_chart_task()
+    context = {'bar_chart': bar_chart}
+    return render(request, 'overview.html', context)
 
 
-@login_required
-def bar_chart_todo(request):
-    # Query TodoPost and WorkState data
-    with connection.cursor() as cursor:
-        cursor.execute("SELECT work_state, COUNT(*) AS count FROM yourapp_todopost GROUP BY work_state")
-        todo_data = cursor.fetchall()
+def bar_chart_task():
+    task_counts = TaskPost.objects.values('work_state').annotate(count=Count('work_state')).order_by('work_state')
+    work_states = WorkState.objects.values('name', 'position').order_by('position')
 
-    cursor.execute("SELECT work_state FROM yourapp_workstate ORDER BY work_state_order")
-    work_state_data = cursor.fetchall()
+    df_task_count = pd.DataFrame(task_counts)
+    df_work_state = pd.DataFrame(work_states)
 
-    # Convert query results to DataFrame
-    df_todo_count = pd.DataFrame(todo_data, columns=['work_state', 'count'])
-    df_work_state = pd.DataFrame(work_state_data, columns=['work_state'])
+    df_work_state.index += 1
 
-    # Join DataFrames
-    df_graph = df_work_state.merge(df_todo_count, on='work_state', how='left').fillna(0)
+    df_graph = df_work_state.set_index('position').join(df_task_count.set_index('work_state'))
+    df_graph = df_graph.fillna(0)
 
-    # Create Plotly figure
-    fig = px.bar(df_graph, x='work_state', y='count', labels={'work_state': 'Work State', 'count': '# of Tasks'},
-                 barmode='group')
+    fig = px.bar(df_graph, x=df_graph.index, y='count', labels={'x': 'Work State', 'count': "# of Tasks"},
+                 barmode="group")
     fig.update_layout(yaxis_range=[0, 20])
     fig.update_traces(marker_color='green')
 
-    # Convert plotly figure to JSON
-    graphJSON = fig.to_json()
-
-    # Return JSON response
-    return JsonResponse(json.loads(graphJSON))
+    graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+    return graphJSON
 
 
 @login_required
@@ -146,7 +139,7 @@ def projects(request):
 
 
 @login_required
-def register(request):
+def register_user(request):
     pass
 
 
