@@ -95,19 +95,20 @@ def overview(request):
 
 def bar_chart_task():
     task_counts = TaskPost.objects.values('work_state').annotate(count=Count('work_state')).order_by('work_state')
-    work_states = WorkState.objects.values('name', 'position').order_by('position')
+    work_states = WorkState.objects.filter(is_hidden='not_hidden').values('name', 'id', 'position').order_by('position')
 
     df_task_count = pd.DataFrame(task_counts)
     df_work_state = pd.DataFrame(work_states)
 
     df_work_state.index += 1
-
     df_graph = df_work_state.set_index('position').join(df_task_count.set_index('work_state'))
     df_graph = df_graph.fillna(0)
 
-    fig = px.bar(df_graph, x=df_graph.index, y='count', labels={'x': 'Work State', 'count': "# of Tasks"},
+    max_count = df_graph['count'].max()
+
+    fig = px.bar(df_graph, x='name', y='count', labels={'x': 'Work State', 'count': "# of Tasks"},
                  barmode="group")
-    fig.update_layout(yaxis_range=[0, 20])
+    fig.update_layout(yaxis_range=[0, max_count + (2 * max_count)], xaxis_title='')
     fig.update_traces(marker_color='green')
 
     graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
