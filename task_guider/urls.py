@@ -15,6 +15,5 @@ urlpatterns = [
     path("settings", views.settings, name="settings"),
     path("task/<int:id>/", views.task, name="task"),
     path("download/<int:task_id>/<int:file_id>/", views.download_file, name="download"),
-    path("calendar", views.calendar, name="calendar"),
     path("logout_user", views.logout_user, name="logout_user"),
 ]

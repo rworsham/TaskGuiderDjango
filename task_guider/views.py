@@ -63,7 +63,7 @@ def dashboard(request):
                 new_task.author = request.user
                 new_task.save()
                 return HttpResponseRedirect("#")
-        if "workstate_form" in request.POST:
+        if "work_state_form" in request.POST:
             if not work_state_create_form.is_valid():
                 print(work_state_create_form.errors)
                 return HttpResponseRedirect("#")
@@ -153,6 +153,7 @@ def settings(request):
 def task(request,id):
     task_post = get_object_or_404(TaskPost, id=id)
     is_subscribed = Subscribed.objects.filter(Q(email=request.user) & Q(subscribed_object=task_post)).exists()
+    current_work_state = WorkState.objects.get(id=task_post.id)
     print(is_subscribed)
     context = {'task': task_post, "task_edit_form": EditTaskForm(), "work_state_change_form": WorkStateChangeFrom(),
                "comments": list(Comment.objects.filter(parent_post=id)), "comment_form": CommentForm(),
@@ -205,11 +206,6 @@ def task(request,id):
         work_state_change_form = WorkStateChangeFrom()
         comment_form = CommentForm()
         return render(request, "task.html", context)
-
-
-@login_required
-def calendar(request):
-    pass
 
 
 @login_required
