@@ -87,6 +87,24 @@ def events(request):
 
 
 @login_required
+def event_data(request):
+    data = []
+    start_date = request.args.get('start').replace("-", "")[:8]
+    end_date = request.args.get('end').replace("-", "")[:8]
+    calendar_events = TaskPost.objects.filter(show_on_calendar=True).order_by('calendar_date')
+    for calendar in calendar_events:
+        if int(start_date) <= int(calendar.calendar_date) <= int(end_date):
+            event = {
+                "title": f"{calendar.title}",
+                "start": f"{calendar.calendar_date}",
+                "end": f"{calendar.calendar_date}",
+                "url": reverse('task', kwargs={'id': calendar.id})
+            }
+            data.append(event)
+    return JsonResponse(data)
+
+
+@login_required
 def overview(request):
     bar_chart = bar_chart_task()
     context = {'bar_chart': bar_chart}
