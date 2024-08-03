@@ -1,7 +1,7 @@
 from django import forms
 from django.forms import ModelForm
 from .models import WorkState, TaskType, Project, Comment, TaskPost, User
-
+from django.utils.translation import gettext_lazy as _
 
 class CreateTaskForm(forms.Form):
     title = forms.CharField(label="Title", required=True, max_length=100)
@@ -41,6 +41,9 @@ class CommentForm(ModelForm):
     class Meta:
         model = Comment
         fields = ["body"]
+        labels = {
+            "body": _("Comments"),
+        }
 
 
 class ProjectForm(ModelForm):
@@ -53,6 +56,9 @@ class WorkStateCreateForm(ModelForm):
     class Meta:
         model = WorkState
         fields = ["name", "position", "is_hidden"]
+        labels = {
+            "is_hidden": _("Visibility"),
+        }
 
 
 class WorkStateChangeFrom(forms.Form):

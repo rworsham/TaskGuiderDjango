@@ -6,11 +6,21 @@ HIDE = (
     ("not_hidden", "Show on Dashboard"),
     ("hidden",  "Hide from Dashboard")
 )
+COLORS = (
+    ("#FF0000", "Red"),
+    ("#FF7F00", "Orange"),
+    ("#FFFF00", "Yellow"),
+    ("#00FF00", "Green"),
+    ("#00FFFF", "Cyan"),
+    ("#0000FF", "Blue"),
+    ("#7F00FF", "Violet"),
+    ("#FF00FF", "Magenta"),
+)
 
 
 class Project(models.Model):
     name = models.CharField(max_length=100)
-    color = models.IntegerField()
+    color = models.CharField(choices=COLORS)
 
     def __str__(self):
         return self.name
