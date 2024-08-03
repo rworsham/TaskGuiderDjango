@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from .views import event_data
 
 
 app_name = "task_guider"
@@ -8,7 +9,7 @@ urlpatterns = [
     path("accounts/login/", views.login_page),
     path("dashboard", views.dashboard, name="dashboard"),
     path("events", views.events, name="events"),
-    path("event_data", views.events, name="event_data"),
+    path("event_data", event_data, name="event_data"),
     path("overview", views.overview, name="overview"),
     path("project_view/<int:id>/", views.project_view, name="project_view"),
     path("projects", views.projects, name="projects"),

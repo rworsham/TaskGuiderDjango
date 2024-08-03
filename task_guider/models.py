@@ -35,7 +35,7 @@ class TaskType(models.Model):
 
 class Comment(models.Model):
     body = models.CharField(max_length=500)
-    date_created = models.DateTimeField(auto_now_add=True)
+    date_created = models.DateField(auto_now_add=True)
     author = models.ForeignKey(User, on_delete=models.PROTECT)
     parent_post = models.ForeignKey('TaskPost', on_delete=models.PROTECT)
 
@@ -44,9 +44,9 @@ class TaskPost(models.Model):
     title = models.CharField(max_length=100, unique=True)
     subtitle = models.CharField(max_length=100)
     work_state = models.ForeignKey(WorkState, on_delete=models.PROTECT, null=True, blank=True)
-    date_created = models.DateTimeField(auto_now_add=True)
-    date_updated = models.DateTimeField(auto_now=True)
-    due_date = models.DateTimeField()
+    date_created = models.DateField(auto_now_add=True)
+    date_updated = models.DateField(auto_now=True)
+    due_date = models.DateField()
     body = models.TextField(max_length=1000)
     show_on_calendar = models.BooleanField(null=True, blank=True)
     type = models.TextField(max_length=50, null=True, blank=True)

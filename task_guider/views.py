@@ -14,6 +14,7 @@ import plotly
 import plotly.express as px
 from django.db import connection
 import pandas as pd
+from datetime import datetime
 
 
 def login_page(request):
@@ -89,19 +90,18 @@ def events(request):
 @login_required
 def event_data(request):
     data = []
-    start_date = request.args.get('start').replace("-", "")[:8]
-    end_date = request.args.get('end').replace("-", "")[:8]
-    calendar_events = TaskPost.objects.filter(show_on_calendar=True).order_by('calendar_date')
+    start_date = request.GET.get('start').replace("-", "")[:8]
+    end_date = request.GET.get('end').replace("-", "")[:8]
+    calendar_events = TaskPost.objects.filter(show_on_calendar=True).order_by('due_date')
     for calendar in calendar_events:
-        if int(start_date) <= int(calendar.calendar_date) <= int(end_date):
+        if int(start_date) <= int(calendar.due_date.strftime('%Y%m%d')) <= int(end_date):
             event = {
                 "title": f"{calendar.title}",
-                "start": f"{calendar.calendar_date}",
-                "end": f"{calendar.calendar_date}",
-                "url": reverse('task', kwargs={'id': calendar.id})
+                "start": f"{calendar.due_date}",
+                "url": reverse('task_guider:task', kwargs={'id': calendar.id})
             }
             data.append(event)
-    return JsonResponse(data)
+    return JsonResponse(data, safe=False)
 
 
 @login_required
