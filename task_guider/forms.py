@@ -32,7 +32,7 @@ class LoginForm(forms.Form):
 class RegistrationForm(forms.Form):
     email = forms.EmailField(label="Email Address", required=True)
     password = forms.CharField(
-        widget=forms.PasswordInput(attrs={'placeholder': 'Entert your password'}), required=True)
+        widget=forms.PasswordInput(attrs={'placeholder': 'Enter your password'}), required=True)
     name = forms.CharField(max_length=100, required=True)
     is_admin = forms.BooleanField(label="Set Admin")
 
