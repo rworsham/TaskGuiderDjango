@@ -57,7 +57,7 @@
                             <form class="row g-3" method=post>
                                {% csrf_token %}
                                 {{ project_form|crispy }}
-                               <input type="submit" name="project_form" value="Save">
+                                <button class="btn btn-success" type="submit" name="project_form">Save</button>
                             </form>
                         </div>
                       </div>

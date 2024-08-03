@@ -58,10 +58,10 @@
                       </div>
                       <div class="modal-body">
                           <div class="col-lg-8 col-md-10 mx-auto">
-                            <form method="post">
+                            <form method="post" class="form">
                                 {% csrf_token %}
                                 {{ task_form|crispy }}
-                                <input type="submit" name="task_form" value="Save">
+                                <button class="btn btn-success" type="submit" name="task_form">Save</button>
                             </form>
                           </div>
                       </div>
@@ -82,7 +82,7 @@
                             <form method="post">
                                 {% csrf_token %}
                                 {{ work_state_create_form|crispy }}
-                               <input type="submit" name="work_state_form" value="Save">
+                                <button class="btn btn-success" type="submit" name="work_state_form">Save</button>
                             </form>
                           </div>
                       </div>
