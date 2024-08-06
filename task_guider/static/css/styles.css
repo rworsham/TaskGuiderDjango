@@ -2036,3 +2036,6 @@ body.sb-sidenav-toggled #wrapper #sidebar-wrapper {
   width: auto;
   padding: 200px;
 }
+.asteriskField {
+    display: none;
+}

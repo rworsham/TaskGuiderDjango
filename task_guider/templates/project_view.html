@@ -49,14 +49,14 @@
                     <div class="row">
                         <h1 class="text-decoration-underline d-flex justify-content-center text-center">{{ project.name }}</h1>
                         {% for work_state in work_states %}
-                        <div class="accordion" id="accordion{{work_state}}">
+                        <div class="accordion" id="accordion{{work_state.id}}">
                           <div class="accordion-item">
                             <h2 class="accordion-header">
-                              <button class="accordion-button " type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne{{work_state}}" aria-expanded="true" aria-controls="collapseOne">
+                              <button class="accordion-button " type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne{{work_state.id}}" aria-expanded="true" aria-controls="collapseOne">
                                 {{work_state}}
                               </button>
                             </h2>
-                            <div id="collapseOne{{work_state}}" class="accordion-collapse collapse" data-bs-parent="#accordion{{work_state}}">
+                            <div id="collapseOne{{work_state.id}}" class="accordion-collapse collapse" data-bs-parent="#accordion{{work_state.id}}">
                               <div class="accordion-body" style="height: 50;">
                                   <div class="list-group ">
                                       <ul class="list-group list-group-horizontal">
@@ -66,15 +66,15 @@
                                                 <li class="list-group-item list-group-item-secondary col-2 text-center">Due Date</li>
                                                 <li class="list-group-item list-group-item-secondary col-3 text-center">Creator</li>
                                       </ul>
-                                      {% for task in project_task_list %}
-                                            {% if task.work_state == work_state %}
+                                      {% for task in tasks %}
+                                            {% if task.work_state_id == work_state.id %}
                                             <ul class="list-group list-group-horizontal position-relative">
-                                                <li><a  href="{% url 'task' id=task.id %}" class="stretched-link"></a></li>
+                                                <li><a  href="{% url 'task_guider:task' id=task.id %}" class="stretched-link"></a></li>
                                                 <li class="list-group-item col-1 text-center">{{task.id }}</li>
                                                 <li class="list-group-item col-4 text-center">{{task.title}}</li>
                                                 <li class="list-group-item col-2 text-center">{{task.date_created}}</li>
                                                 <li class="list-group-item col-2 text-center">{{task.due_date}}</li>
-                                                <li class="list-group-item col-3 text-center">{{task.author.name}}</li>
+                                                <li class="list-group-item col-3 text-center">{{task.author.username}}</li>
                                             </ul>
                                             {% endif %}
                                       {% endfor %}
