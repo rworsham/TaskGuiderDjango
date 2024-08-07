@@ -44,7 +44,7 @@
   --bs-black-rgb: 0, 0, 0;
   --bs-body-color-rgb: 33, 37, 41;
   --bs-body-bg-rgb: 255, 255, 255;
-  --bs-font-sans-serif: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --bs-font-sans-serif: system-ui, -apple-system, "Inter", "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   --bs-font-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   --bs-gradient: linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
   --bs-body-font-family: var(--bs-font-sans-serif);
@@ -83,7 +83,7 @@
 
 body {
   margin: 0;
-  font-family: var(--bs-body-font-family);
+  font-family: "Inter", sans-serif !important;
   font-size: var(--bs-body-font-size);
   font-weight: var(--bs-body-font-weight);
   line-height: var(--bs-body-line-height);
@@ -2045,6 +2045,38 @@ body.sb-sidenav-toggled #wrapper #sidebar-wrapper {
   width: auto;
   padding: 200px;
 }
+
 .asteriskField {
     display: none;
+}
+
+.dashboard-scroll {
+    overflow-x: auto;
+    overflow-y: hidden;
+    width: 100%;
+    height: 93vh;
+}
+
+.task-scroll {
+    overflow-y: auto;
+    width: auto;
+    height: auto;
+}
+
+.project-task-scroll {
+    overflow-y: auto;
+    width: auto;
+    max-height: 50;
+}
+
+.comment-scroll {
+    overflow-y: auto;
+    height: 75vh;
+}
+
+.inter-light {
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: <300>;
+  font-style: normal;
 }

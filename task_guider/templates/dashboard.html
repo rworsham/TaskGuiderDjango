@@ -8,6 +8,9 @@
         <meta name="author" content="Robert Worsham" />
         <title>Task Guider</title>
         <link rel="icon" href="{% static 'assets/favicon.svg' %}" type="image/svg+xml">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
         <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
     </head>
@@ -100,7 +103,7 @@
                                 <a  class="d-flex align-items-center flex-shrink-0 p-3  text-decoration-none border-bottom">
                                   <span class="fs-5 fw-semibold">{{ work_state.name }}</span>
                                 </a>
-                                <div class="list-group scrollarea">
+                                <div class="list-group">
                                     {% for task in tasks %}
                                       {% if task.work_state_id == work_state.id %}
                                       <a href="{% url 'task_guider:task' task.id %}"  class="list-group-item list-group-item-action py-3 mb-2 border rounded lh-sm" aria-current="true">
