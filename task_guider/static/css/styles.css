@@ -758,8 +758,17 @@ textarea {
   border-radius: var(--bs-dropdown-border-radius);
 }
 
+.dropdown-menu.show {
+  display: block;
+}
+
 .dropdown-menu-end {
   --bs-position: end;
+}
+
+.dropdown-menu-end[data-bs-popper] {
+  right: 0;
+  left: auto;
 }
 
 .dropdown-divider {
