@@ -9,7 +9,7 @@ class CreateTaskForm(forms.Form):
     work_state = forms.ModelChoiceField(label="Select Work State",
                                         queryset=WorkState.objects.all(), to_field_name='name', required=True)
     body = forms.CharField(label="Content", widget=forms.Textarea(attrs={'name': 'body', 'rows': '3', 'cols': '5'}))
-    due_date = forms.DateField()
+    due_date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
     show_on_calendar = forms.BooleanField(label="Show on Calendar?")
     type = forms.ModelChoiceField(label="Select Task Type if applicable",
                                   queryset=TaskType.objects.all(), to_field_name='name', required=True)
