@@ -51,7 +51,7 @@ class Comment(models.Model):
 
 
 class TaskPost(models.Model):
-    title = models.CharField(max_length=100, unique=True)
+    title = models.CharField(max_length=100)
     subtitle = models.CharField(max_length=100)
     work_state = models.ForeignKey(WorkState, on_delete=models.PROTECT, null=True, blank=True)
     date_created = models.DateField(auto_now_add=True)
