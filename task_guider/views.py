@@ -7,7 +7,8 @@ from django.utils import timezone
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from .models import Project, TaskPost, WorkState, TaskType, Comment
-from .forms import CreateTaskForm, WorkStateCreateForm, EditTaskForm, WorkStateChangeFrom, CommentForm, ProjectForm, LoginForm
+from .forms import (CreateTaskForm, WorkStateCreateForm, EditTaskForm, WorkStateChangeFrom, CommentForm, ProjectForm,
+                    LoginForm, RegisterNewUserForm, TaskTypeForm)
 from subscribed.models import Subscribed
 import json
 import plotly
@@ -164,7 +165,9 @@ def register_user(request):
 
 @login_required
 def settings(request):
-    pass
+    context = {"register_new_user_form": RegisterNewUserForm(), "work_state_create_form": WorkStateCreateForm(),
+               "work_state_edit_form": WorkStateCreateForm()}
+    return render(request, "settings.html", context)
 
 
 @login_required
