@@ -4,6 +4,7 @@ from .models import WorkState, TaskType, Project, Comment, TaskPost
 from django.contrib.auth.models import User
 from django.utils.translation import gettext_lazy as _
 
+
 class CreateTaskForm(forms.Form):
     title = forms.CharField(label="Title", required=True, max_length=100)
     subtitle = forms.CharField(label="Subtitle", required=True, max_length=100)

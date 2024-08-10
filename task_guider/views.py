@@ -9,6 +9,7 @@ from django.contrib.auth.decorators import login_required
 from .models import Project, TaskPost, WorkState, TaskType, Comment
 from .forms import (CreateTaskForm, WorkStateCreateForm, EditTaskForm, WorkStateChangeFrom, CommentForm, ProjectForm,
                     LoginForm, RegisterNewUserForm, TaskTypeForm)
+from django.contrib.auth.models import User
 from subscribed.models import Subscribed
 import json
 import plotly
@@ -166,8 +167,40 @@ def register_user(request):
 @login_required
 def settings(request):
     context = {"register_new_user_form": RegisterNewUserForm(), "work_state_create_form": WorkStateCreateForm(),
-               "work_state_edit_form": WorkStateCreateForm()}
-    return render(request, "settings.html", context)
+               "work_state_edit_form": WorkStateCreateForm(), "new_task_type": TaskTypeForm(),
+               "work_states": list(WorkState.objects.all()), "users": list(User.objects.all()),
+               "task_types": list(TaskType.objects.all()),}
+    if request.method == "POST":
+        register_new_user_form = RegisterNewUserForm(request.POST)
+        work_state_create_form = WorkStateCreateForm(request.POST)
+        work_state_edit_form = WorkStateCreateForm(request.POST)
+        new_task_type = TaskTypeForm(request.POST)
+        if "register_new_user_form" in request.POST:
+            if not register_new_user_form.is_valid():
+                return HttpResponseRedirect('#')
+            if register_new_user_form.is_valid():
+                return HttpResponseRedirect('#')
+        if "work_state_create_form" in request.POST:
+            if not work_state_create_form.is_valid():
+                return HttpResponseRedirect('#')
+            if work_state_create_form.is_valid():
+                return HttpResponseRedirect('#')
+        if "work_state_edit_form" in request.POST:
+            if not work_state_edit_form.is_valid():
+                return HttpResponseRedirect('#')
+            if work_state_edit_form.is_valid():
+                return HttpResponseRedirect('#')
+        if "new_task_type" in request.POST:
+            if not new_task_type.is_valid():
+                return HttpResponseRedirect('#')
+            if new_task_type.is_valid():
+                return HttpResponseRedirect('#')
+    else:
+        register_new_user_form = RegisterNewUserForm()
+        work_state_create_form = WorkStateCreateForm()
+        work_state_edit_form = WorkStateCreateForm()
+        new_task_type = TaskTypeForm()
+        return render(request, "settings.html", context)
 
 
 @login_required
@@ -231,6 +264,35 @@ def task(request,id):
 def logout_user(request):
     logout(request)
     return redirect("task_guider:login_page")
+
+
+@login_required()
+def deactivate_user(request, id):
+    if request.user.is_authenticated and request.user.is_staff:
+        user = get_object_or_404(User, pk=id)
+        user.is_active = False
+        user.save()
+        return redirect("task_guider:settings")
+    return redirect("task_guider:settings")
+
+
+@login_required()
+def activate_user(request, id):
+    if request.user.is_authenticated and request.user.is_staff:
+        user = get_object_or_404(User, pk=id)
+        user.is_active = True
+        user.save()
+        return redirect("task_guider:settings")
+    return redirect("task_guider:settings")
+
+
+@login_required()
+def delete_task_type(request, id):
+    if request.user.is_authenticated and request.user.is_staff:
+        task_type = get_object_or_404(TaskType, pk=id)
+        task_type.delete()
+        return redirect("task_guider:settings")
+    return redirect("task_guider:settings")
 
 
 @login_required

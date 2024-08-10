@@ -3,8 +3,8 @@ from django.contrib.auth.models import User
 
 
 HIDE = (
-    ("not_hidden", "Show on Dashboard"),
-    ("hidden",  "Hide from Dashboard")
+    ("Visible", "Show on Dashboard"),
+    ("Hidden",  "Hide from Dashboard")
 )
 COLORS = (
     ("#FF0000", "Red"),
@@ -16,7 +16,13 @@ COLORS = (
     ("#7F00FF", "Violet"),
     ("#FF00FF", "Magenta"),
 )
-
+ICONS = (
+    ('<i class="bi bi-tools"></i>', 'Repair'),
+    ('<i class="bi bi-hammer"></i>', 'New Install'),
+    ('<i class="bi bi-bug-fill"></i>', 'Bug'),
+    ('<i class="bi bi-stars"></i>', 'Feature'),
+    ('<i class="bi bi-ethernet"></i>', 'Network'),
+)
 
 class Project(models.Model):
     name = models.CharField(max_length=100)
