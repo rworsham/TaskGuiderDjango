@@ -64,3 +64,9 @@ class WorkStateCreateForm(ModelForm):
 class WorkStateChangeFrom(forms.Form):
     new_work_state = forms.ModelChoiceField(label="Select Work State",
                                         queryset=WorkState.objects.all(), to_field_name='name', required=True)
+
+
+class TaskTypeForm(ModelForm):
+    class Meta:
+        model = TaskType
+
