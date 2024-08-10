@@ -69,4 +69,8 @@ class WorkStateChangeFrom(forms.Form):
 class TaskTypeForm(ModelForm):
     class Meta:
         model = TaskType
+        fields = ["name"]
+        labels = {
+            "name": _("Task Type Name"),
+        }
 
