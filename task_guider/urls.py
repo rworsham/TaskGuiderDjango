@@ -18,7 +18,5 @@ urlpatterns = [
     path("task/<int:id>/", views.task, name="task"),
     path("download/<int:task_id>/<int:file_id>/", views.download_file, name="download"),
     path("logout_user", views.logout_user, name="logout_user"),
-    path("deactivate_user/<int:id>/", views.deactivate_user, name="deactivate_user"),
-    path("activate_user/<int:id>/", views.activate_user, name="activate_user"),
     path("delete_task_type/<int:id>/", views.delete_task_type, name="delete_task_type"),
 ]

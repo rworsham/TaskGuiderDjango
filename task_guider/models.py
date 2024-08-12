@@ -43,7 +43,7 @@ class WorkState(models.Model):
 
 class TaskType(models.Model):
     name = models.CharField(max_length=25)
-    icon = models.CharField(max_length=250)
+    icon = models.CharField(choices=ICONS)
 
     def __str__(self):
         return self.name

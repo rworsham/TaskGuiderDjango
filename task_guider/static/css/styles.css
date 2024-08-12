@@ -2080,3 +2080,11 @@ body.sb-sidenav-toggled #wrapper #sidebar-wrapper {
   font-weight: <300>;
   font-style: normal;
 }
+
+.btn-for-post-invisible {
+    background: none; /* Removes background */
+    border: none; /* Removes border */
+    padding: 0; /* Removes padding */
+    font-size: 1.0rem; /* Adjust icon size */
+    cursor: pointer; /* Changes cursor to pointer */
+}

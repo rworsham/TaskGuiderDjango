@@ -63,6 +63,15 @@ class WorkStateCreateForm(ModelForm):
         }
 
 
+class WorkStateEditForm(ModelForm):
+    class Meta:
+        model = WorkState
+        fields = ["position", "is_hidden"]
+        labels = {
+            "is_hidden": _("Visibility"),
+        }
+
+
 class WorkStateChangeFrom(forms.Form):
     new_work_state = forms.ModelChoiceField(label="Select Work State",
                                         queryset=WorkState.objects.all(), to_field_name='name', required=True)
@@ -71,7 +80,7 @@ class WorkStateChangeFrom(forms.Form):
 class TaskTypeForm(ModelForm):
     class Meta:
         model = TaskType
-        fields = ["name"]
+        fields = ["name", "icon"]
         labels = {
             "name": _("Task Type Name"),
         }
