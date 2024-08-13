@@ -196,7 +196,7 @@ def settings(request):
                 work_state_edit.is_hidden = work_state_edit_form.cleaned_data["is_hidden"]
                 work_state_edit.save()
                 return HttpResponseRedirect('#')
-        if "new_task_type" in request.POST:
+        if "new_task_type_form" in request.POST:
             if not new_task_type.is_valid():
                 print(new_task_type.errors)
                 return HttpResponseRedirect('#')

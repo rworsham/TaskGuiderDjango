@@ -115,7 +115,7 @@
                       </div>
                       <div class="col-md-7 pt-2 d-flex justify-content-center text-center border border-bottom-0 border-start-0 border-end-0 border-secondary-subtle rounded-top">
                         <div class="post-heading">
-                          <h1 class="text-decoration-underline">{{ task.title }}</h1>
+                          <h1 class="text-decoration-underline">{{ task.type.icon|safe }}&nbsp;&nbsp;&nbsp;{{ task.title }}&nbsp;&nbsp;&nbsp;{{ task.type.icon|safe }}</h1>
                           <h3 class="subheading fst-italic">{{ task.subtitle }}</h3>
                             <small class="fst-italic">Due {{ task.due_date }}</small>
                         </div>
@@ -150,7 +150,7 @@
                       </div>
                       <div class="col-md-7 border border-top-0 border-start-0 border-end-0 border-secondary-subtle rounded-bottom pt-2">
                           <hr>
-                          <p class="fst-italic  py-1">Posted by {{ task.author.name }} on {{ task.date_created }}</p>
+                          <p class="fst-italic  py-1">Posted by {{ task.author.username }} on {{ task.date_created }}</p>
                             {{ task.body|safe }}
                           <hr>
                       </div>

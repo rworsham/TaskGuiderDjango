@@ -111,10 +111,13 @@
                                           <strong class="mb-1">{{ task.title }}</strong>
                                           <small>{{ task.due_date }}</small>
                                         </div>
-                                          <div class="col-8 mb-1 small fst-italic">{{ task.subtitle }}</div>
+                                          <div class="d-flex w-100 align-items-center justify-content-between">
+                                              <small>{{ task.subtitle }}</small>
+                                              <small>{{ task.author.username }}</small>
+                                          </div>
                                         <div class="d-flex w-100 align-items-center justify-content-between">
-                                            <small>{{ task.project.project }}</small>
-                                            <small>{{ task.author.name }}</small>
+                                            <small>{{ task.project_name }}</small>
+                                            <small>{{ task.type.icon|safe }}</small>
                                         </div>
                                       </a>
                                       {% endif %}
