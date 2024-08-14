@@ -2088,3 +2088,16 @@ body.sb-sidenav-toggled #wrapper #sidebar-wrapper {
     font-size: 1.0rem; /* Adjust icon size */
     cursor: pointer; /* Changes cursor to pointer */
 }
+.fc-daygrid-day {
+  overflow: hidden; /* Hide overflow content */
+}
+.fc-daygrid-day-content {
+  max-height: 100px; /* Set your desired max height */
+  overflow: hidden; /* Hide overflow content */
+}
+.fc-daygrid-day-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%; /* Ensure number is centered */
+}

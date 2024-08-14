@@ -35,13 +35,16 @@
 
                 // any other sources...
 
-              ]
+              ],
+              views: {
+                dayGridMonth: {
+                    dayMaxEventRows: 3 // Limit the number of event rows per day
+                }
+              }
             });
             calendar.render();
           });
-
         </script>
-    </head>
     <body>
     {% load crispy_forms_tags %}
         <div class="d-flex" id="wrapper">
